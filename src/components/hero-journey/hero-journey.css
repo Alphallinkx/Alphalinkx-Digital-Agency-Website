@@ -1,0 +1,28 @@
+/* Reserve the same frame before the React animation mounts. */
+.hj-shell { position: relative; width: 100%; max-width: 1500px; margin-top: 14px; container-type: inline-size; }
+.hj-poster { position: absolute; left: 23.49%; top: 6%; width: 46.24%; height: auto; pointer-events: none; }
+.hj[data-ready] + .hj-poster { visibility: hidden; }
+@container (width < 720px) {
+  .hj { aspect-ratio: 1000 / 1260; }
+  .hj-poster { left: 5.7%; top: 28.89%; width: 88.6%; }
+}
+
+/* Alphalinkx hero journey scene — pairs with heroJourneyEngine.js */
+.hj { position: relative; width: 100%; aspect-ratio: 1916 / 700; overflow: hidden; user-select: none; -webkit-user-select: none; }
+.hj-stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.hj-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.hj-wires path { fill: none; stroke-linecap: round; }
+.hj-w-shadow path { stroke: rgba(176, 96, 96, .26); stroke-width: 7; filter: blur(3px); transform: translateY(9px); }
+.hj-w-base path { stroke: #fe5300; stroke-width: 4.5; }
+.hj-w-hi path { stroke: #ffb27e; stroke-width: 1.4; transform: translateY(-1.1px); opacity: .9; }
+.hj-w-comet path { stroke: #fff3e8; stroke-width: 6; filter: var(--hj-filter); }
+.hj-dot { opacity: 0; }
+.hj-obj { position: absolute; opacity: 0; will-change: transform, opacity; transform-origin: 50% 50%; }
+.hj-obj img { display: block; width: 100%; height: 100%; -webkit-user-drag: none; }
+.hj-center { transform-origin: 50% 90%; }
+.hj-shadow { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(168, 92, 92, .3), rgba(168, 92, 92, .12) 55%, transparent); filter: blur(5px); opacity: 0; }
+.hj-halo { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 110, 30, .55), rgba(255, 140, 70, .22) 50%, transparent); filter: blur(10px); opacity: 0; pointer-events: none; }
+.hj-ring { position: absolute; width: 900px; height: 120px; border-radius: 50%; border: 3px solid rgba(255, 84, 0, .5); box-shadow: 0 0 26px rgba(255, 84, 0, .25), inset 0 0 22px rgba(255, 84, 0, .18); opacity: 0; pointer-events: none; }
+.hj-window { position: absolute; border-radius: 30%; background: radial-gradient(closest-side, rgba(255, 238, 200, .95), rgba(255, 190, 120, .45) 55%, transparent); mix-blend-mode: screen; opacity: 0; pointer-events: none; }
+.hj-sparks { position: absolute; width: 0; height: 0; pointer-events: none; }
+.hj-sparks i { position: absolute; left: -4px; top: -14px; width: 8px; height: 28px; border-radius: 4px; background: #ff6a1c; box-shadow: 0 2px 0 #c94c0a; opacity: 0; transform-origin: 50% 50%; }

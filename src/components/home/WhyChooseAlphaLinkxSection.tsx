@@ -1,0 +1,198 @@
+'use client';
+
+import React from 'react';
+import { motion } from 'motion/react';
+import { Check, X } from 'lucide-react';
+import { BrandButton } from '../common/BrandButton';
+import { WhyChooseWaveBackground } from './WhyChooseWaveBackground';
+
+interface ComparisonRow {
+  feature: string;
+  others: boolean;
+  alpha: boolean;
+}
+
+const COMPARISON_ROWS: ComparisonRow[] = [
+  { feature: 'One connected team', others: false, alpha: true },
+  { feature: 'Tailored strategy', others: false, alpha: true },
+  { feature: 'Conversion-first execution', others: false, alpha: true },
+  { feature: 'Direct collaboration', others: false, alpha: true },
+  { feature: 'Measurable outcomes', others: false, alpha: true },
+];
+
+export const WhyChooseAlphaLinkxSection: React.FC = () => {
+  return (
+    <section className="relative py-20 bg-[#F8EEE8] border-t border-[#DAD1CC] overflow-hidden">
+      {/* 3D Animated Undulating Wave Particle Background */}
+      <WhyChooseWaveBackground />
+
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10">
+        {/* Section Header: Headings on LEFT, Orange CTA on RIGHT (aligned with site header) */}
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-8 mb-10 sm:mb-12 lg:mb-14 transform-gpu"
+        >
+          {/* LEFT SIDE: Eyebrow, Heading, Subtitle */}
+          <div className="flex flex-col items-start text-left max-w-2xl">
+            {/* Eyebrow: // WHY ALPHALINKX */}
+            <div className="font-mono text-[11px] sm:text-[12px] font-semibold text-[#FF5400] uppercase tracking-[0.2em] mb-2 sm:mb-2.5 flex items-center gap-2">
+              <span className="font-bold">//</span>
+              <span className="text-[#555555]">WHY ALPHALINKX</span>
+            </div>
+
+            {/* Heading: Exact font size from HowWeWorkSection */}
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-[54px] tracking-[-0.03em] leading-[1.08] text-[#000000]">
+              <span className="block">From visibility</span>
+              <span className="block text-[#FF5400]">To momentum.</span>
+            </h2>
+
+            {/* Supporting Text */}
+            <p className="font-sans text-[15px] sm:text-[16px] text-[#333333] leading-relaxed mt-2.5 sm:mt-3">
+              Strategy, design and growth execution—connected by one clear direction.
+            </p>
+          </div>
+
+          {/* RIGHT SIDE: Two26 Signature Black Pill CTA */}
+          <div className="flex items-center gap-3 shrink-0 self-start md:self-center">
+            <BrandButton to="/contact" variant="black">
+              WORK WITH ALPHALINKX
+            </BrandButton>
+          </div>
+        </motion.div>
+
+        {/* Two Cards Grid - 1:2 ratio aligned with 1400px header bounds */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-7 xl:gap-8 items-stretch">
+          {/* Left Card: Strategy with a reason */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.12 }}
+            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-4 relative rounded-[24px] sm:rounded-[30px] overflow-hidden shadow-sm border border-[#DAD1CC] flex flex-col justify-between min-h-[380px] sm:min-h-[420px] lg:min-h-[430px] transform-gpu"
+          >
+            {/* Full-bleed background image with texture, peach glow, and ribbon artwork */}
+            <img
+              src="/assets/why-left-card-bg.jpg"
+              alt="Strategy with a reason"
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 w-full h-full object-cover object-bottom select-none pointer-events-none"
+            />
+
+            {/* Content overlay */}
+            <div className="relative z-10 px-6 sm:px-8 lg:px-9 py-7 sm:py-8 flex flex-col justify-start h-full">
+              <h3 className="font-display font-extrabold text-[28px] sm:text-[32px] lg:text-[34px] text-[#000000] leading-[1.04] tracking-[-0.03em]">
+                Strategy<br />with a reason.
+              </h3>
+
+              {/* Slashed List */}
+              <ul className="mt-5 sm:mt-6 space-y-2.5 sm:space-y-3 font-mono text-[13px] sm:text-[13.5px]">
+                {[
+                  'Business-first thinking',
+                  'Tailored execution',
+                  'Transparent communication',
+                  'Long-term partnership',
+                ].map((item, idx) => (
+                  <li key={idx} className="flex items-center text-[#18181B] font-semibold tracking-tight">
+                    <span className="text-[#FF5400] font-normal mr-2 tracking-tighter">//</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Action Button (Black variant for high contrast over light peach card) */}
+              <div className="mt-6">
+                <BrandButton to="/contact" variant="black">
+                  START A PROJECT
+                </BrandButton>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Card: Us vs. the usual */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.12 }}
+            transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-8 relative rounded-[24px] sm:rounded-[30px] px-5 sm:px-8 lg:px-10 py-6 sm:py-8 bg-[#FDF8F5] border border-[#DAD1CC] flex flex-col justify-between shadow-sm transform-gpu"
+          >
+            <div>
+              {/* Header inside right card */}
+              <div>
+                <h3 className="font-display font-extrabold text-[26px] sm:text-[32px] md:text-[34px] text-[#000000] leading-tight tracking-[-0.02em]">
+                  Us vs. the usual.
+                </h3>
+                <p className="text-[#555555] text-[12px] sm:text-[13px] font-mono tracking-[0.02em] mt-1.5">
+                  The difference is how the work stays connected.
+                </p>
+              </div>
+
+              {/* Comparison Table */}
+              <div className="relative mt-5 sm:mt-6">
+                {/* Glowing Highlight Box strictly framing the ALPHALINKX column */}
+                <div
+                  className="absolute top-0 right-0 w-[33.3333%] sm:w-[25%] bottom-0 rounded-2xl border border-[#FF5400] bg-[#FF5400]/[0.05] pointer-events-none"
+                  style={{ zIndex: 0 }}
+                />
+
+                {/* Table Header */}
+                <div className="relative z-10 grid grid-cols-12 items-center pt-3 pb-2">
+                  <div className="col-span-6 sm:col-span-7" />
+                  <div className="col-span-2 text-center">
+                    <span className="font-mono text-[10px] sm:text-[12px] font-medium tracking-[0.08em] sm:tracking-[0.14em] uppercase text-[#71717A]">
+                      OTHERS
+                    </span>
+                  </div>
+                  <div className="col-span-4 sm:col-span-3 text-center">
+                    <span className="font-mono text-[10px] sm:text-[12px] font-bold tracking-[0.08em] sm:tracking-[0.14em] uppercase text-[#000000]">
+                      ALPHALINKX
+                    </span>
+                  </div>
+                </div>
+
+                {/* Rows with prominent bold labels */}
+                <div className="relative z-10 divide-y divide-[#DAD1CC] pb-1">
+                  {COMPARISON_ROWS.map((row, idx) => (
+                    <div
+                      key={idx}
+                      className="grid grid-cols-12 items-center py-3 sm:py-3.5 transition-colors hover:bg-[#F3EEEB]"
+                    >
+                      {/* Feature Title */}
+                      <div className="col-span-6 sm:col-span-7 pr-2 sm:pr-4">
+                        <span className="text-[#000000] font-bold text-[13.5px] sm:text-[16px] md:text-[18px] lg:text-[20px] tracking-tight leading-snug block">
+                          {row.feature}
+                        </span>
+                      </div>
+
+                      {/* OTHERS Column (Cross) */}
+                      <div className="col-span-2 flex items-center justify-center">
+                        <X
+                          className="w-4 h-4 sm:w-5 sm:h-5 text-[#888888]"
+                          strokeWidth={2}
+                        />
+                      </div>
+
+                      {/* ALPHALINKX Column (Orange check circle) */}
+                      <div className="col-span-4 sm:col-span-3 flex items-center justify-center">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#FF5400] flex items-center justify-center text-white shadow-sm">
+                          <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3.5] text-white" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default WhyChooseAlphaLinkxSection;
