@@ -13,17 +13,16 @@ function SmoothScrollManager() {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isTouch = typeof window !== 'undefined' && (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window);
-    if (prefersReducedMotion || isTouch) return;
+    const hasFinePointer = window.matchMedia('(any-pointer: fine)').matches;
+    if (prefersReducedMotion || !hasFinePointer) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.55,
+      easing: (progress) => 1 - (1 - progress) ** 3,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 0,
+      wheelMultiplier: 0.75,
       syncTouch: false,
     });
 
@@ -49,6 +48,7 @@ function SmoothScrollManager() {
 
     // Global anchor click interceptor for smooth scrolling to sections
     const handleAnchorClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const target = (e.target as HTMLElement).closest('a');
       if (!target) return;
 
@@ -66,8 +66,6 @@ function SmoothScrollManager() {
             e.preventDefault();
             lenis.scrollTo(element, {
               offset: -75,
-              duration: 1.3,
-              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             });
             history.pushState(null, '', hash);
           }
@@ -97,8 +95,6 @@ function SmoothScrollManager() {
           const timer = setTimeout(() => {
             (window as any).lenis?.scrollTo(element, {
               offset: -75,
-              duration: 1.2,
-              easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             });
           }, 120);
           return () => clearTimeout(timer);
