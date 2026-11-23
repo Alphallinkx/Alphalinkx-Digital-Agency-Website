@@ -1,7 +1,7 @@
 'use client';
 
 import React, { type ReactNode } from "react";
-import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BRAND_BUTTON_BASE_CLASS } from "./BrandButton";
@@ -170,12 +170,6 @@ export function MagneticButton({
   dataCursor?: string;
 }) {
   const router = useRouter();
-  const reduce = useReducedMotion();
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 250, damping: 18 });
-  const sy = useSpring(y, { stiffness: 250, damping: 18 });
-
   const isInternalRoute = href.startsWith("/") && !href.startsWith("/#") && !href.includes("#");
 
   const styles =
@@ -208,30 +202,19 @@ export function MagneticButton({
   };
 
   return (
-    <motion.a
+    <a
       href={href}
       onClick={handleClick}
-      style={{ x: sx, y: sy }}
       data-cursor={dataCursor}
-      onPointerMove={(e) => {
-        if (reduce || e.pointerType !== "mouse") return;
-        const r = e.currentTarget.getBoundingClientRect();
-        x.set((e.clientX - r.left - r.width / 2) * 0.2);
-        y.set((e.clientY - r.top - r.height / 2) * 0.3);
-      }}
-      onPointerLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
       className={`${BRAND_BUTTON_BASE_CLASS} ${styles.container} ${className}`}
     >
       <span className="leading-none tracking-[-0.01em]">{children}</span>
       <span
         aria-hidden="true"
-        className={`w-[32px] h-[32px] rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:rotate-45 shadow-sm ${styles.badge}`}
+        className={`w-[32px] h-[32px] rounded-full flex items-center justify-center shrink-0 shadow-sm ${styles.badge}`}
       >
-        <ArrowUpRight className={`w-4 h-4 stroke-[2.5] ${styles.arrow}`} />
+        <ArrowUpRight data-cta-arrow className={`w-4 h-4 stroke-[2.5] ${styles.arrow}`} />
       </span>
-    </motion.a>
+    </a>
   );
 }

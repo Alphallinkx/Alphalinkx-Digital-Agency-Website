@@ -47,28 +47,28 @@ const VARIANT_CLASSES: Record<
   // Primary CTA (Two26 signature black pill): Deep black with white text and vibrant accent badge
   black: {
     container:
-      'bg-[#000000] text-white border border-[#000000] hover:bg-[#1A1A1A] hover:border-[#FF5400] hover:scale-[1.03] active:scale-[0.98] shadow-sm focus-visible:ring-[#FF5400]',
+      'bg-[#000000] text-white border border-[#000000] hover:bg-[#1A1A1A] hover:border-[#FF5400] shadow-sm focus-visible:ring-[#FF5400]',
     badge: 'bg-[#FF5400] text-white shadow-sm',
     arrow: 'text-white',
   },
   // Vibrant Brand Accent CTA: Warm vibrant Two26 orange pill
   orange: {
     container:
-      'bg-[#FF5400] text-white border border-[#FF5400] hover:bg-[#EB4D00] hover:scale-[1.03] active:scale-[0.98] shadow-sm focus-visible:ring-[#FF5400]',
+      'bg-[#FF5400] text-white border border-[#FF5400] hover:bg-[#EB4D00] shadow-sm focus-visible:ring-[#FF5400]',
     badge: 'bg-white text-[#FF5400] shadow-sm',
     arrow: 'text-[#FF5400]',
   },
   // Secondary Light / Surface CTA: Two26 surface cream pill with hairline border
   white: {
     container:
-      'bg-[#FDF8F5] text-[#000000] border border-[#DAD1CC] hover:bg-[#F3EEEB] hover:border-[#FF5400] hover:scale-[1.03] active:scale-[0.98] shadow-sm focus-visible:ring-[#000000]',
+      'bg-[#FDF8F5] text-[#000000] border border-[#DAD1CC] hover:bg-[#F3EEEB] hover:border-[#FF5400] shadow-sm focus-visible:ring-[#000000]',
     badge: 'bg-[#000000] text-white shadow-sm',
     arrow: 'text-white',
   },
 };
 
 export const BRAND_BUTTON_BASE_CLASS =
-  'group relative inline-flex items-center justify-center gap-3.5 pt-[7px] pr-[7px] pb-[7px] pl-[22px] rounded-full font-sans text-[14.5px] font-semibold leading-none whitespace-nowrap antialiased transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#060709] disabled:opacity-50 disabled:pointer-events-none select-none';
+  'site-cta relative inline-flex items-center justify-center gap-3.5 pt-[7px] pr-[7px] pb-[7px] pl-[22px] rounded-full font-sans text-[14.5px] font-semibold leading-none whitespace-nowrap antialiased transition-colors duration-200 shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#060709] disabled:opacity-50 disabled:pointer-events-none select-none';
 
 /**
  * Site-wide canonical pill CTA button:
@@ -94,9 +94,9 @@ export const BrandButton: React.FC<BrandButtonProps> = ({
       <span className="leading-none tracking-[-0.01em]">{children}</span>
       <span
         aria-hidden="true"
-        className={`w-[32px] h-[32px] rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:rotate-45 shadow-sm ${styles.badge}`}
+        className={`w-[32px] h-[32px] rounded-full flex items-center justify-center shrink-0 shadow-sm ${styles.badge}`}
       >
-        <ArrowUpRight className={`w-4 h-4 stroke-[2.5] ${styles.arrow}`} />
+        <ArrowUpRight data-cta-arrow className={`w-4 h-4 stroke-[2.5] ${styles.arrow}`} />
       </span>
     </>
   );

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main className="w-full bg-[#F8EEE8] text-[#000000] overflow-x-clip selection:bg-[#FF5400] selection:text-white">
+    <main className="home-page w-full text-[#000000] overflow-x-clip selection:bg-[#FF5400] selection:text-white">
       {/* 01. HERO: Looking Suspiciously Good -> BE THE ALPHA IN YOUR MARKET */}
       <Two26Hero />
 

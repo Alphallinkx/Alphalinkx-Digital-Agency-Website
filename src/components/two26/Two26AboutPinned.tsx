@@ -83,7 +83,7 @@ export const Two26AboutPinned: React.FC = () => {
     <section
       ref={sectionRef}
       id="about"
-      className="relative w-full min-h-screen bg-[#F8EEE8] border-b border-[#DAD1CC] flex items-center justify-center overflow-hidden py-24 select-none"
+      className="two26-about relative w-full min-h-screen border-b border-[#DAD1CC] flex items-center justify-center overflow-hidden py-24 select-none"
     >
       <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 sm:px-12 flex flex-col items-center text-center">
         {/* Eyebrow Label */}

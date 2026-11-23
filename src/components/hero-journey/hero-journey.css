@@ -1,10 +1,21 @@
 /* Reserve the same frame before the React animation mounts. */
 .hj-shell { position: relative; width: 100%; max-width: 1500px; margin-top: 14px; container-type: inline-size; }
-.hj-poster { position: absolute; left: 23.49%; top: 6%; width: 46.24%; height: auto; pointer-events: none; }
+.hj-poster { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.hj-poster img { position: absolute; left: var(--wide-left); top: var(--wide-top); width: var(--wide-width); height: auto; }
+.hj-poster [data-icon-entrance] {
+  --entrance-x: var(--wide-entrance-x);
+  --entrance-y: var(--wide-entrance-y);
+  --entrance-remaining: calc(1 - var(--entrance-progress, 1));
+  transform: translate(calc(var(--entrance-x) * var(--entrance-remaining)), calc(var(--entrance-y) * var(--entrance-remaining)))
+    scale(calc(1 - 0.65 * var(--entrance-remaining)));
+  opacity: min(1, calc(1.4 * var(--entrance-progress, 1)));
+}
+.hj:not([data-ready]) .hj-stage { visibility: hidden; }
 .hj[data-ready] + .hj-poster { visibility: hidden; }
 @container (width < 720px) {
   .hj { aspect-ratio: 1000 / 1260; }
-  .hj-poster { left: 5.7%; top: 28.89%; width: 88.6%; }
+  .hj-poster img { left: var(--compact-left); top: var(--compact-top); width: var(--compact-width); }
+  .hj-poster [data-icon-entrance] { --entrance-x: var(--compact-entrance-x); --entrance-y: var(--compact-entrance-y); }
 }
 
 /* Alphalinkx hero journey scene — pairs with heroJourneyEngine.js */
@@ -17,7 +28,7 @@
 .hj-w-hi path { stroke: #ffb27e; stroke-width: 1.4; transform: translateY(-1.1px); opacity: .9; }
 .hj-w-comet path { stroke: #fff3e8; stroke-width: 6; filter: var(--hj-filter); }
 .hj-dot { opacity: 0; }
-.hj-obj { position: absolute; opacity: 0; will-change: transform, opacity; transform-origin: 50% 50%; }
+.hj-obj { position: absolute; will-change: transform; transform-origin: 50% 50%; }
 .hj-obj img { display: block; width: 100%; height: 100%; -webkit-user-drag: none; }
 .hj-center { transform-origin: 50% 90%; }
 .hj-shadow { position: absolute; border-radius: 50%; background: radial-gradient(closest-side, rgba(168, 92, 92, .3), rgba(168, 92, 92, .12) 55%, transparent); filter: blur(5px); opacity: 0; }

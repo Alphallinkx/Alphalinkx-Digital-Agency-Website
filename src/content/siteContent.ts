@@ -33,6 +33,7 @@ export interface Testimonial {
 }
 
 export const BRAND = {
+  logo: { url: '/assets/alphalinkx-updated-logo.png', width: 1536, height: 470, alt: 'Alphalinkx' },
   name: 'ALPHALINKX',
   tagline: 'Growth, Linked.',
   est: 'EST. 2024',

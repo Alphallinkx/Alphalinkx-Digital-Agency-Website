@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Two26Button } from '../common/Two26Button';
+import { Logo } from '../common/Logo';
 import { ArrowUp } from 'lucide-react';
 import { BRAND } from '../../content/siteContent';
 
@@ -153,7 +154,10 @@ export const Two26Footer: React.FC = () => {
       {/* Slim Black Bottom Strip */}
       <div className="relative z-20 bg-[#000000] text-[#A1A1AA] py-4 sm:py-5 border-t border-black/30">
         <div className="max-w-[1360px] mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] sm:text-[12px] font-medium uppercase tracking-[0.16em]">
-          <p>© 2026 AlphaLinkx Studio. Crafted for unfair advantage.</p>
+          <div className="flex flex-wrap items-center justify-center gap-3 text-center sm:justify-start sm:text-left">
+            <Logo size="sm" className="bg-[#FDF8F5] px-2 py-1.5" />
+            <p>© 2026 AlphaLinkx Studio. Crafted for unfair advantage.</p>
+          </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">
               Privacy

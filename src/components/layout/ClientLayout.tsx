@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
 import { Navbar } from './Navbar';
@@ -139,7 +139,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <Navbar />
 
         <div className="flex-1 flex flex-col">
-          <Suspense fallback={null}>{children}</Suspense>
+          {children}
         </div>
 
         <Footer />

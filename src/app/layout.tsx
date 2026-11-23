@@ -6,6 +6,7 @@ import '@fontsource-variable/schibsted-grotesk';
 import '@fontsource-variable/schibsted-grotesk/wght-italic.css';
 import '../index.css';
 import { ClientLayout } from '@/components/layout/ClientLayout';
+import { BRAND } from '@/content/siteContent';
 
 export const metadata: Metadata = {
   title: 'Alphalinkx — Digital Agency & Technology Studio',
@@ -37,14 +38,14 @@ export const metadata: Metadata = {
     title: 'Alphalinkx — Digital Agency & Technology Studio',
     description:
       'We build digital experiences that move businesses forward. From high-performance websites to intelligent AI solutions and data-driven marketing.',
-    images: [{ url: '/assets/alphalinkx-full-logo.png' }],
+    images: [BRAND.logo],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Alphalinkx — Digital Agency & Technology Studio',
     description:
       'We build digital experiences that move businesses forward. Custom web development, AI automation, and digital marketing.',
-    images: ['/assets/alphalinkx-full-logo.png'],
+    images: [BRAND.logo],
   },
 };
 

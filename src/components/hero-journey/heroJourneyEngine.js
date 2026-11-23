@@ -1,51 +1,18 @@
+import { LAYOUTS, SIZE } from './heroJourneyLayout';
+
 /* Alphalinkx hero — "service journey" scene. Framework-free, needs GSAP 3.
-   Mounts the responsive scene and returns playback and cleanup controls.
+   Mounts the responsive scene and returns a cleanup function.
    Loop: a signal leaves Website → SEO → your shop → Ads → AI → Booked Call, each piece reacts as it arrives. */
 /**
  * @param {HTMLElement} root
- * @param {{ gsap: typeof import('gsap').default, assets: string, delay: number, id: string }} options
+ * @param {{ gsap: typeof import('gsap').default, assets: string, id: string, entrance: Promise<unknown> }} options
  */
-function initHeroJourney(root, { gsap, assets, delay, id }) {
+function initHeroJourney(root, { gsap, assets, id, entrance }) {
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   const glowId = `${id}-glow`;
   const nodeId = `${id}-node`;
   const NS = 'http://www.w3.org/2000/svg';
-  const SIZE = { website: [226, 224], seo: [200, 194], ads: [198, 184], ai: [186, 200], booked: [320, 288], center: [886, 616] };
   const KEYS = Object.keys(SIZE);
-
-  /* Layouts in logical px. obj: top-left of each cutout. Wires: cubic points tagged with what they follow. */
-  const LAYOUTS = {
-    wide: {
-      w: 1916, h: 700, dy: -70,
-      obj: { website: [108, 322], seo: [404, 162], center: [450, 112], ads: [1040, 100], ai: [1320, 210], booked: [1536, 330] },
-      depth: { website: 1, seo: 0.85, center: 0.3, ads: 0.85, ai: 0.9, booked: 1 },
-      shadows: { website: [222, 600, 230, 34], center: [895, 726, 840, 60], booked: [1690, 642, 310, 40] },
-      window: [400, 313, 156, 122], ring: [895, 722],
-      nodes: [['n1', 383, 403], ['n2', 660, 252], ['center', 987, 224], ['n4', 1287, 285], ['booked', 1545, 488]],
-      wires: [
-        { to: 'seo', p: [['website', 318, 428], ['website', 350, 425], ['n1', 365, 412], ['n1', 383, 403], ['n1', 405, 390], ['seo', 425, 362], ['seo', 446, 336]] },
-        { to: 'center', p: [['seo', 588, 262], ['seo', 615, 254], ['n2', 640, 250], ['n2', 660, 252], ['n2', 685, 254], ['center', 703, 262], ['center', 724, 274]] },
-        { to: 'ads', p: [['center', 987, 224], ['center', 1008, 212], ['ads', 1030, 200], ['ads', 1054, 198]] },
-        { to: 'ai', p: [['ads', 1222, 234], ['ads', 1248, 254], ['n4', 1266, 280], ['n4', 1287, 285], ['n4', 1306, 290], ['ai', 1316, 300], ['ai', 1334, 306]] },
-        { to: 'booked', p: [['ai', 1440, 396], ['ai', 1452, 450], ['booked', 1500, 486], ['booked', 1545, 488]] },
-      ],
-    },
-    compact: {
-      w: 1000, h: 1260, dy: 34,
-      obj: { website: [30, 40], seo: [400, 55], ads: [760, 60], center: [57, 330], ai: [210, 960], booked: [560, 930] },
-      depth: { website: 1, seo: 1, ads: 1, center: 0.3, ai: 1, booked: 1 },
-      shadows: { center: [500, 950, 800, 56], ai: [303, 1180, 170, 26], booked: [720, 1210, 290, 34] },
-      window: [400, 313, 156, 122], ring: [500, 946],
-      nodes: [['n1', 345, 128], ['n2', 680, 188], ['center', 594, 442], ['n4', 280, 935], ['booked', 572, 1062]],
-      wires: [
-        { to: 'seo', p: [['website', 250, 150], ['website', 300, 122], ['n1', 320, 122], ['n1', 345, 128], ['n1', 370, 134], ['seo', 392, 150], ['seo', 412, 160]] },
-        { to: 'ads', p: [['seo', 592, 150], ['seo', 640, 180], ['n2', 660, 188], ['n2', 680, 188], ['n2', 700, 188], ['ads', 735, 172], ['ads', 768, 156]] },
-        { to: 'center', p: [['ads', 860, 236], ['ads', 860, 340], ['center', 650, 360], ['center', 594, 442]] },
-        { to: 'ai', p: [['center', 200, 880], ['center', 190, 915], ['n4', 255, 925], ['n4', 280, 935], ['n4', 300, 942], ['ai', 300, 955], ['ai', 300, 975]] },
-        { to: 'booked', p: [['ai', 388, 1060], ['ai', 450, 1062], ['booked', 520, 1062], ['booked', 572, 1062]] },
-      ],
-    },
-  };
 
   /* ---------- build DOM ---------- */
   root.replaceChildren();
@@ -63,11 +30,14 @@ function initHeroJourney(root, { gsap, assets, delay, id }) {
   const wireEls = [0, 1, 2, 3, 4].map(() => ({
     shadow: p(layers.shadow), base: p(layers.base), hi: p(layers.hi), comet: p(layers.comet),
   }));
+  const imageDecodes = [];
+  let disposed = false;
   KEYS.forEach((k) => {
     const d = mk('div', `hj-obj hj-${k}`, stage);
     const img = mk('img', '', d);
+    if (['center', 'website', 'seo'].includes(k)) img.fetchPriority = 'high';
     Object.assign(img, { src: `${assets}/${k}.webp`, alt: '', draggable: false, width: SIZE[k][0], height: SIZE[k][1] });
-    if (k === 'center') img.fetchPriority = 'high';
+    imageDecodes.push(img.decode());
     d.style.width = SIZE[k][0] + 'px'; d.style.height = SIZE[k][1] + 'px';
     objEl[k] = d;
   });
@@ -88,17 +58,16 @@ function initHeroJourney(root, { gsap, assets, delay, id }) {
 
   /* ---------- state ---------- */
   const zero = () => Object.fromEntries(KEYS.map((k) => [k, 0]));
-  const S = { intro: zero(), lift: zero(), halo: zero(), draw: [0, 0, 0, 0, 0], prog: [0, 0, 0, 0, 0], node: [0, 0, 0, 0, 0], ring: 0, win: 0, spark: 0 };
+  const S = { lift: zero(), halo: zero(), draw: [0, 0, 0, 0, 0], prog: [0, 0, 0, 0, 0], node: [0, 0, 0, 0, 0], ring: 0, win: 0, spark: 0 };
   const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
   const PH = { website: 0, seo: 1.3, center: 2.1, ads: 2.9, ai: 3.8, booked: 4.6, n1: 0.7, n2: 1.9, n4: 3.3 };
   let L = LAYOUTS.wide;
   let tl, introTl;
   let elapsed = 0;
   let reduce = motionPreference.matches;
-  let inView = true;
-  let playing = true;
+  let inView = false;
   let ticking = false;
-  S.intro.center = 1;
+  let imagesReady = false;
 
   const centerOf = (k) => [L.obj[k][0] + SIZE[k][0] / 2, L.obj[k][1] + SIZE[k][1] / 2 + L.dy];
 
@@ -138,9 +107,7 @@ function initHeroJourney(root, { gsap, assets, delay, id }) {
     const f = reduce ? 0 : 1, m = reduce ? { x: 0, y: 0 } : mouse, o = {};
     for (const k of KEYS) {
       const d = L.depth[k], amp = k === 'center' ? 3 : 8;
-      const [cx, cy] = centerOf(k), [mx, my] = centerOf('center'), back = 1 - S.intro[k];
-      const fly = k === 'center' ? [0, back * 60] : [(mx - cx) * back * 0.7, (my - cy) * back * 0.7];
-      o[k] = [m.x * 22 * d + fly[0], Math.sin(t * (0.9 + d * 0.3) + PH[k]) * amp * f + m.y * 12 * d - S.lift[k] + fly[1]];
+      o[k] = [m.x * 22 * d, Math.sin(t * (0.9 + d * 0.3) + PH[k]) * amp * f + m.y * 12 * d - S.lift[k]];
     }
     for (const n of ['n1', 'n2', 'n4']) o[n] = [m.x * 16, Math.sin(t * 1.6 + PH[n]) * 4 * f + m.y * 9];
     return o;
@@ -157,15 +124,14 @@ function initHeroJourney(root, { gsap, assets, delay, id }) {
     mouse.x += (mouse.tx - mouse.x) * 0.06; mouse.y += (mouse.ty - mouse.y) * 0.06;
     const o = offsets(elapsed);
     for (const k of KEYS) {
-      const d = L.depth[k], it = S.intro[k];
-      const sc = (k === 'center' ? 0.94 + it * 0.06 : 0.35 + it * 0.65) * (1 + S.lift[k] * 0.004);
+      const d = L.depth[k];
+      const sc = 1 + S.lift[k] * 0.004;
       const ry = reduce ? 0 : mouse.x * 9 * d, rx = reduce ? 0 : -mouse.y * 7 * d;
       objEl[k].style.transform = `translate(${o[k][0]}px,${o[k][1]}px) perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${sc})`;
-      objEl[k].style.opacity = Math.min(1, it * 1.4);
       glowEl[k].style.opacity = S.halo[k];
       glowEl[k].style.transform = `translate(${o[k][0]}px,${o[k][1]}px) scale(${0.8 + S.halo[k] * 0.3})`;
-      const lift = o[k][1] - (k === 'center' ? (1 - it) * 60 : 0);
-      shEl[k].style.opacity = it * Math.max(0.2, 0.9 - lift * 0.015);
+      const lift = o[k][1];
+      shEl[k].style.opacity = Math.max(0.2, 0.9 - lift * 0.015);
       shEl[k].style.transform = `translateX(${o[k][0] * 0.5}px) scale(${1 + lift * 0.01})`;
     }
     const wireLengths = L.wires.map((w, i) => {
@@ -241,17 +207,14 @@ function initHeroJourney(root, { gsap, assets, delay, id }) {
   }
 
   function intro() {
-    const i = gsap.timeline({ delay });
-    ['website', 'seo', 'ads', 'ai', 'booked'].forEach((k, n) => {
-      i.to(S.intro, { [k]: 1, duration: 0.9, ease: 'back.out(1.5)' }, 0.35 + n * 0.09);
-    });
-    L.wires.forEach((_, n) => i.to(S.draw, { [n]: 1, duration: 0.45, ease: 'power2.inOut' }, 1.0 + n * 0.16));
+    const i = gsap.timeline();
+    L.wires.forEach((_, n) => i.to(S.draw, { [n]: 1, duration: 0.45, ease: 'power2.inOut' }, 0.28 + n * 0.12));
     i.call(() => { tl = loop(); }, null, '+=0.3');
     return i;
   }
 
   function syncPlayback() {
-    const active = playing && inView && !reduce && !document.hidden;
+    const active = imagesReady && inView && !reduce && !document.hidden;
     if (ticking !== active) {
       ticking = active;
       if (active) gsap.ticker.add(render);
@@ -268,9 +231,8 @@ function initHeroJourney(root, { gsap, assets, delay, id }) {
     introTl = tl = undefined;
     resetSignal();
     mouse.x = mouse.y = mouse.tx = mouse.ty = 0;
-    KEYS.forEach((key) => { S.intro[key] = reduce || key === 'center' ? 1 : 0; });
     S.draw.fill(reduce ? 1 : 0);
-    if (!reduce) introTl = intro();
+    if (!reduce && imagesReady) introTl = intro();
     syncPlayback();
     render();
   }
@@ -285,10 +247,13 @@ function initHeroJourney(root, { gsap, assets, delay, id }) {
 
   layout();
   syncPreference();
-  const centerImage = objEl.center.querySelector('img');
-  const revealStage = () => { root.dataset.ready = 'true'; };
-  if (centerImage.complete && centerImage.naturalWidth) revealStage();
-  else centerImage.addEventListener('load', revealStage, { once: true });
+  Promise.allSettled([...imageDecodes, entrance]).then(() => {
+    if (disposed) return;
+    imagesReady = true;
+    root.dataset.ready = 'true';
+    if (!reduce) introTl = intro();
+    syncPlayback();
+  });
 
   const resize = new ResizeObserver(layout);
   resize.observe(root);
@@ -303,25 +268,19 @@ function initHeroJourney(root, { gsap, assets, delay, id }) {
   document.addEventListener('visibilitychange', syncPlayback);
   motionPreference.addEventListener('change', syncPreference);
 
-  return {
-    setPlaying(value) {
-      playing = value;
-      syncPlayback();
-    },
-    dispose() {
-      gsap.ticker.remove(render);
-      introTl?.kill();
-      tl?.kill();
-      resize.disconnect();
-      intersection.disconnect();
-      root.removeEventListener('pointermove', onMove);
-      root.removeEventListener('pointerleave', onLeave);
-      document.removeEventListener('visibilitychange', syncPlayback);
-      motionPreference.removeEventListener('change', syncPreference);
-      centerImage.removeEventListener('load', revealStage);
-      delete root.dataset.ready;
-      root.replaceChildren();
-    },
+  return () => {
+    disposed = true;
+    gsap.ticker.remove(render);
+    introTl?.kill();
+    tl?.kill();
+    resize.disconnect();
+    intersection.disconnect();
+    root.removeEventListener('pointermove', onMove);
+    root.removeEventListener('pointerleave', onLeave);
+    document.removeEventListener('visibilitychange', syncPlayback);
+    motionPreference.removeEventListener('change', syncPreference);
+    delete root.dataset.ready;
+    root.replaceChildren();
   };
 }
 
