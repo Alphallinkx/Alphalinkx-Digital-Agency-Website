@@ -20,7 +20,7 @@ export function Two26Hero() {
       ref={heroRef}
       data-enter
       data-motion-paused={!inView}
-      className="two26-hero relative isolate flex w-full flex-col items-center overflow-hidden px-4 pb-10 pt-[104px] text-center sm:px-8 sm:pb-12 sm:pt-[124px] lg:pt-[143px]"
+      className="two26-hero relative isolate flex w-full flex-col items-center overflow-hidden px-4 pt-[104px] text-center sm:px-8 sm:pt-[124px] lg:pt-[143px]"
     >
       {(['left', 'right'] as const).map((side, index) => (
         <svg

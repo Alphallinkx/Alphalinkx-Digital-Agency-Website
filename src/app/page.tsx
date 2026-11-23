@@ -19,11 +19,11 @@ export default function HomePage() {
       {/* 01. HERO: Looking Suspiciously Good -> BE THE ALPHA IN YOUR MARKET */}
       <Two26Hero />
 
-      {/* 02. ABOUT PINNED: Kinetic letter scrub + floating stickers */}
-      <Two26AboutPinned />
-
-      {/* 03. SHOWCASE SLIDER: Full-bleed infinite horizontal marquee */}
+      {/* 02. SERVICE MARQUEE */}
       <Two26ShowcaseSlider />
+
+      {/* 03. ABOUT PINNED: Kinetic letter scrub + floating stickers */}
+      <Two26AboutPinned />
 
       {/* 04. SELECTED PROJECTS: Vertical cards with scroll clip-mask reveal */}
       <Two26Projects />

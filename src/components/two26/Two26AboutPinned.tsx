@@ -25,19 +25,21 @@ export const Two26AboutPinned: React.FC = () => {
 
     if (!section || !para) return;
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
-
     const wordSpans = para.querySelectorAll('.about-word');
 
-    // Create ScrollTrigger timeline pinned to the section
-    const ctx = gsap.context(() => {
+    const viewport = gsap.matchMedia();
+    viewport.add({
+      motion: '(prefers-reduced-motion: no-preference)',
+      canPin: '(min-width: 768px) and (min-height: 1200px)',
+    }, ({ conditions }) => {
+      if (!conditions?.motion) return;
+      const { canPin } = conditions;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: 'top top',
-          end: '+=1200',
-          pin: true,
+          start: canPin ? 'top top' : 'top 80%',
+          end: canPin ? '+=1200' : 'bottom 55%',
+          pin: canPin,
           scrub: 0.8,
           anticipatePin: 1,
         },
@@ -74,29 +76,27 @@ export const Two26AboutPinned: React.FC = () => {
       }
     }, section);
 
-    return () => {
-      ctx.revert();
-    };
+    return () => viewport.revert();
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="about"
-      className="two26-about relative w-full min-h-screen border-b border-[#DAD1CC] flex items-center justify-center overflow-hidden py-24 select-none"
+      className="two26-about relative w-full border-b border-[#DAD1CC] overflow-hidden pt-6 pb-16 sm:pt-8 sm:pb-20 select-none"
     >
-      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 sm:px-12 flex flex-col items-center text-center">
+      <div className="relative z-10 w-full max-w-[1480px] mx-auto px-6 sm:px-12 flex flex-col items-center text-center">
         {/* Eyebrow Label */}
-        <div className="font-mono text-[11px] sm:text-[13px] font-bold text-[#FF5400] uppercase tracking-[0.24em] mb-8 sm:mb-12">
-          // A BIT ABOUT US
-        </div>
+        <h2 className="font-mono text-[11px] sm:text-[13px] font-bold text-[#FF5400] uppercase tracking-[0.24em] mb-6 sm:mb-10">
+          A bit about us
+        </h2>
 
         {/* Pinned Kinetic Statement */}
-        <div className="relative w-full max-w-4xl mx-auto">
+        <div className="relative w-full">
           {/* Floating Pill 1: Left */}
           <div
             ref={pill1Ref}
-            className="hidden lg:inline-flex absolute -top-12 -left-12 z-20 bg-[#FF5400] text-white px-5 py-2 rounded-full font-mono text-[12px] font-bold tracking-[0.06em] uppercase shadow-sm cursor-default"
+            className="hidden lg:inline-flex absolute -top-12 left-0 z-20 bg-[#FF5400] text-white px-5 py-2 rounded-full font-mono text-[12px] font-bold tracking-[0.06em] uppercase shadow-sm cursor-default"
           >
             Obsessed with ROI
           </div>
@@ -104,7 +104,7 @@ export const Two26AboutPinned: React.FC = () => {
           {/* Floating Pill 2: Right Top */}
           <div
             ref={pill2Ref}
-            className="hidden lg:inline-flex absolute -top-8 -right-10 z-20 bg-[#000000] text-white px-5 py-2 rounded-full font-mono text-[12px] font-bold tracking-[0.06em] uppercase shadow-sm cursor-default"
+            className="hidden lg:inline-flex absolute -top-8 right-0 z-20 bg-[#000000] text-white px-5 py-2 rounded-full font-mono text-[12px] font-bold tracking-[0.06em] uppercase shadow-sm cursor-default"
           >
             Data meets high craft
           </div>
@@ -119,11 +119,11 @@ export const Two26AboutPinned: React.FC = () => {
 
           <p
             ref={paraRef}
-            className="font-display font-bold text-[32px] sm:text-[46px] md:text-[54px] lg:text-[62px] leading-[1.08] tracking-[-0.03em] text-[#333333]"
+            className="font-display font-bold text-[32px] sm:text-[46px] md:text-[54px] lg:text-[72px] xl:text-[100px] leading-[1.08] tracking-[-0.03em] text-[#333333]"
           >
             {ABOUT_TEXT.split(' ').map((word, idx) => (
               <span key={idx} className="inline-block whitespace-nowrap mr-[0.25em]">
-                <span className="about-word inline-block transition-colors will-change-transform opacity-30 text-[#FF5400]">
+                <span className="about-word inline-block transition-colors will-change-transform opacity-30 text-[#FF5400] motion-reduce:opacity-100 motion-reduce:text-black">
                   {word}
                 </span>
               </span>
